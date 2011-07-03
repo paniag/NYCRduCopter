@@ -61,7 +61,7 @@ void APU_IMU_Oilpan::_init_gyro() {
     int flashcount = 0;
     int tc_temp;
     float adc_in;
-    float prev[3] = {0,0,0};
+    float prev[5] = {0,0,0,0,0};
     float total_change;
     float max_offset;
 
@@ -90,10 +90,10 @@ void APU_IMU_Oilpan::_init_gyro() {
 
     do {
         for (int j = GYRO_START; j <= GYRO_END; j++) {
-            prev[j]         = _sensor_cal[j];
-            adc_in          = _adc->Ch(_sensors[j]);
-            adc_in         -= _sensor_compensation(j, tc_temp);
-            _sensor_cal[j]  = adc_in;
+            prev[j]             = _sensor_cal[j];
+            adc_in              = _adc->Ch(_sensors[j]);
+            adc_in             -= _sensor_compensation(j, tc_temp);
+            _sensor_cal[j]      = adc_in;
         }
 
         for (int i = 0; i < 50; i++) {
@@ -125,12 +125,15 @@ void APU_IMU_Oilpan::_init_gyro() {
         for (int j = GYRO_START; j <= GYRO_END; j++)
             total_change += fabs(prev[j] - _sensor_cal[j]);
 
-        max_offset = _sensor_cal[GYRO_START];
+        max_offset = fabs(_sensor_cal[GYRO_START]);
         for (int j = GYRO_START+1; j <= GYRO_END; j++)
-            max_offset = (max_offset > _sensor_cal[j]) ? max_offset : _sensor_cal[j];
+            max_offset = (max_offset > fabs(_sensor_cal[j])) ? max_offset : fabs(_sensor_cal[j]);
 
         delay(500);
     } while (total_change > _gyro_total_cal_change || max_offset > _gyro_max_cal_offset);
+    
+    Serial.println("");
+    Serial.println("Gyros done.");
 }
 
 void APU_IMU_Oilpan::save () {
@@ -144,7 +147,7 @@ void APU_IMU_Oilpan::init_accel () {
 void APU_IMU_Oilpan::_init_accel () {
     int flashcount = 0;
     float adc_in;
-    float prev[5] = {0,0,0};
+    float prev[5] = {0,0,0,0,0};
     float total_change;
     float max_offset;
 
@@ -204,7 +207,8 @@ void APU_IMU_Oilpan::_init_accel () {
     } while (total_change > _accel_total_cal_change || max_offset > _accel_max_cal_offset);
 
     //Serial.printf_P(PSTR(" "));
-    Serial.print(" ");
+    Serial.println("");
+    Serial.println("Accelerometers done.");
 }
 
 /*

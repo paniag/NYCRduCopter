@@ -8,7 +8,7 @@ IMPORTANT: Do NOT connect the 5-DOF to a +5V power supply. Powering with
     MORE than 3.6V may result in DAMAGE to the sensors!
     The Uno has a 3.3V output, which is fine to use.
 
-Connect AREV to 3.3V for increased sensitivity (in ADC steps).
+Connect AREF to 3.3V for increased sensitivity (in ADC steps).
 
 
 Primary Differences
