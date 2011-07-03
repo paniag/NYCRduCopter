@@ -20,9 +20,13 @@ const int8_t  APU_IMU_Oilpan::_sensor_signs[5] = { 1,-1,-1, 1,-1 };   // Channel
 // [X/Y/Z gyro][A/B/C or 0 order/1st order/2nd order constants]
 //
 const float APU_IMU_Oilpan::_gyro_temp_curve[3][3] = {
-    {1658,0,0},           // Values to use if no temp compensation data available
-    {1658,0,0},           // Based on average values for 20 sample boards
-    {1658,0,0}            // (Copied directly from arducopter.)
+//    {1658,0,0},             // Values to use if no temp compensation data available
+//    {1658,0,0},             // Based on average values for 20 sample boards
+//    {1658,0,0}              // (Copied directly from arducopter.)
+//
+    {414.5,0,0},            // Values to use if no temp compensation data available
+    {414.5,0,0},            // Based on average values for 20 sample boards
+    {414.5,0,0}             // (Divided by 4 since they use 12bit ADC and we use 10bit ADC)
 };
 
 APU_IMU_Oilpan::APU_IMU_Oilpan (APU_ADC *adc) :
@@ -39,6 +43,7 @@ void APU_IMU_Oilpan::init (Start_style style) {
 //        _sensor_cal.load();
     } else {
         // do cold-start calibration for both accel and gyro
+
         _init_gyro();
         _init_accel();
 

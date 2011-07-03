@@ -1,0 +1,55 @@
+This project contains an adaptation of the ArduPilot IMU functionality
+as taken from the AP_IMU library of the ArduCopter project.
+
+Code in this project is intended to run on Arduino Uno hardware. It is
+designed to stream data from the IMU back to a computer using Serial.
+
+IMPORTANT: Do NOT connect the 5-DOF to a +5V power supply. Powering with
+    MORE than 3.6V may result in DAMAGE to the sensors!
+    The Uno has a 3.3V output, which is fine to use.
+
+Connect AREV to 3.3V for increased sensitivity (in ADC steps).
+
+
+Primary Differences
+===================
+
+ADC - The original ArduCopter source is intended to be run on specialized
+    hardware built around the Arduino Mega. It also uses an external
+    12-bit ADC connected to a serial port.
+    It has been replaced by code that uses Uno's the onboard 10-bit ADC.
+    Note that this required making some changes to constants used in
+    the IMU for reading sensor data.
+
+Hardware Serial - Some places in the code used the FastSerial library or
+    hardware serial ports found on the Arduino Mega but not the Uno. These
+    references were modified or removed as appropriate.
+
+IMU DOF - ArduCopter has 3 gyro axes, but our IMU has only 2. This required
+    a few small changes where sensor readings are taken and sensor data is
+    stored.
+
+EEPROM Storage - I haven't studied how this works yet, so I omitted it.
+    ArduCopter has functions (under AP_Common) that allow persisting config
+    or calibration data. This'll be nice in the future, but for now
+    it wasn't needed.
+
+Files
+=====
+
+board.h - Pin connections are defined here
+
+calibration.h - constants related to particular sensors
+
+IMU.h, APU_* - files from AP_IMU library, distilled to function on the Uno
+
+ArducopterIMU.pde - main file with setup & loop. Just reads data from the
+    IMU and pipes it out through Serial.
+
+Dependencies
+============
+
+You'll need the ArduPilot libraries installed. They are included in the source
+distribution, along with installation instructions.
+
+AP_Math  is the only library used by the first version of this code.

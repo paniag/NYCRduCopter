@@ -5,11 +5,13 @@
  */
 
 // LED pin mappings
-#define A_LED_PIN         4
+#define A_LED_PIN         13
 #define C_LED_PIN         5
 
 /*
  * ADC pin mappings
+ *
+ * Connect AREF to 3.3V
  */
 
 // IMU sensor channels

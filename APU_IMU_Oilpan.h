@@ -7,7 +7,6 @@
  */
 
 #include <AP_Math.h>
-//#include <AP_Common.h>
 #include "APU_Common.h"
 #include "IMU.h"
 #include "board.h"
@@ -35,7 +34,7 @@ public:
      */
     virtual void init (Start_style style = COLD_START);
 
-    virtual void save ();
+    virtual void save (); // does nothing - no persistence
     virtual void init_accel ();
     virtual void init_gyro ();
     virtual bool update ();
@@ -44,6 +43,7 @@ private:
     APU_ADC             *_adc;          // ADC that we use for reading sensors
 //    AP_VarA<float,5>    _sensor_cal;    // Calibrated sensor offsets
     float               _sensor_cal[5];
+    // Switched away from AP_VarA - this is the EEPROM functionality
 
     virtual void        _init_accel (); // no-save implementation
     virtual void        _init_gyro ();  // no-save implementation
